@@ -11,7 +11,12 @@
         android:layout_height="wrap_content"
         android:hint="@string/editTextHint"
         android:id="@+id/editTextSearchQuery"/>
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        android:id="@+id/searchButton"
+        android:layout_gravity="center_horizontal|center_vertical"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
