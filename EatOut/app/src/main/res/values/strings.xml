@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">EatOut</string>
+    <string name = "editTextHint">Restaurant...</string>
+</resources>
