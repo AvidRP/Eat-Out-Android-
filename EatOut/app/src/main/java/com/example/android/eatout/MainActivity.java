@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,10 @@ public class MainActivity extends AppCompatActivity {
 
     TextView searchResultsTextView;
 
+    TextView errorMessageDisplay;
+
+    ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
         searchButton = (Button) findViewById(R.id.searchButton);
 
         searchResultsTextView = (TextView) findViewById(R.id.textViewDisplayResults);
+
+        errorMessageDisplay = (TextView) findViewById(R.id.errorMessageDisplayTextView);
+
+        progressBar = (ProgressBar) findViewById(R.id.pbDisplay);
 
 
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -46,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         //need make the url, so call buildUrl
         String searchQuery = editText.getText().toString();
         URL newSearchUrl = NetworkUtils.buildUrl(searchQuery);
-        Toast.makeText(MainActivity.this, "Searching..", Toast.LENGTH_SHORT).show();
         new searchTask().execute(newSearchUrl);
     }
 
@@ -75,8 +83,26 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //better error handling
+    private void displayErrorMessage() {
+        errorMessageDisplay.setVisibility(View.VISIBLE);
+        searchResultsTextView.setVisibility(View.INVISIBLE);
+    }
+
+    private void displaySearchResults () {
+        errorMessageDisplay.setVisibility(View.INVISIBLE);
+        searchResultsTextView.setVisibility(View.VISIBLE);
+    }
+
     //have to do all connection stuff in another thread otherwise the app crashes.
     public class searchTask extends AsyncTask <URL, Void, String> {
+
+        //progress bar till the background task is done
+        @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+            super.onPreExecute();
+        }
 
         //so get the http response in the background
         @Override
@@ -95,9 +121,15 @@ public class MainActivity extends AppCompatActivity {
         //after the background task is complete
         @Override
         protected void onPostExecute(String s) {
+            //gotta hide the progress bar
+            progressBar.setVisibility(View.INVISIBLE);
             //have to see if its still null
             if(s != null && !s.equals("")) {
                 searchResultsTextView.setText(s);
+                //no error means display content
+                displaySearchResults();
+            } else {
+                displayErrorMessage();
             }
             super.onPostExecute(s);
         }
