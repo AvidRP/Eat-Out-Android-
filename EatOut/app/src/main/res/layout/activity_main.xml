@@ -17,14 +17,30 @@
         android:text="Search"
         android:id="@+id/searchButton"
         android:layout_gravity="center_horizontal|center_vertical"/>
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollViewForText">
-        <TextView
+        android:layout_height="wrap_content">
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textViewDisplayResults"/>
-    </ScrollView>
-
+            android:id="@+id/scrollViewForText"
+            android:layout_marginTop="16dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewDisplayResults"/>
+        </ScrollView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/errorMessageDisplayTextView"
+            android:visibility="invisible"/>
+        <ProgressBar
+            android:id="@+id/pbDisplay"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center"
+            android:visibility="invisible"
+            />
+    </FrameLayout>
 </LinearLayout>
